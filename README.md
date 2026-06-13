@@ -45,8 +45,9 @@ to:
 ```
 
 ## Windows
+run win win_setup.bat auto
 
-Copy:
+Manual Copy:
 
 * `shaders/`
 * `scripts/`
