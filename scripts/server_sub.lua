@@ -8,6 +8,8 @@ local OFFSET_X = 20
 local OFFSET_Y = 120
 
 local server_url = nil
+local realtime_enabled = false
+local last_sub = nil
 
 -- ==========================================================
 -- OSD
@@ -83,7 +85,7 @@ local function translate_text(text)
 end
 
 -- ==========================================================
--- ACTIONS
+-- NORMAL TRANSLATE (T)
 -- ==========================================================
 
 local function translate_osd_and_terminal()
@@ -99,13 +101,18 @@ local function translate_osd_and_terminal()
 
     local translated = translate_text(subtitle)
     if translated then
-        print("Original: "..subtitle)
-        print("Translated: "..translated)
+        print("Original: " .. subtitle)
+        print("Translated: " .. translated)
         show_osd(translated)
     else
         show_osd("Translate failed")
     end
 end
+
+-- ==========================================================
+-- TERMINAL ONLY (Ctrl+Shift+T MODE OFFLINE)
+-- (dipertahankan untuk manual single shot)
+-- ==========================================================
 
 local function translate_terminal_only()
     pause_video()
@@ -118,15 +125,91 @@ local function translate_terminal_only()
 
     local translated = translate_text(subtitle)
     if translated then
-        print("Original: "..subtitle)
-        print("Translated: "..translated)
+        print("Original: " .. subtitle)
+        print("Translated: " .. translated)
     else
         print("Translate failed")
     end
 end
 
 -- ==========================================================
--- INPUT URL (NO HISTORY)
+-- REALTIME TRANSLATE (TERMINAL ONLY)
+-- Ctrl+Shift+T -> toggle mode
+-- ==========================================================
+
+local function realtime_translate_handler()
+    if not realtime_enabled then return end
+
+    local subtitle = get_current_subtitle()
+    if not subtitle or subtitle == last_sub then
+        return
+    end
+
+    last_sub = subtitle
+
+    local translated = translate_text(subtitle)
+    if translated then
+        print("[REALTIME]")
+        print("Original: " .. subtitle)
+        print("Translated: " .. translated)
+        print("----------------------------")
+    end
+end
+
+local function toggle_realtime_translate()
+    realtime_enabled = not realtime_enabled
+
+    if realtime_enabled then
+        mp.observe_property("sub-text", "string", realtime_translate_handler)
+        print("Realtime translate: ON (terminal only)")
+    else
+        mp.unobserve_property(realtime_translate_handler)
+        last_sub = nil
+        print("Realtime translate: OFF")
+    end
+end
+
+
+-- ==========================================================
+-- QUICK TRANSLATE INPUT (Ctrl + Alt + T)
+-- ==========================================================
+
+local function quick_translate_submit(text)
+    input.terminate()
+
+    if not text or text == "" then
+        return
+    end
+
+    text = text:match("^%s*(.-)%s*$")
+
+    show_osd("Translating...")
+
+    local translated = translate_text(text)
+
+    if translated then
+        print("Quick Translate")
+        print("Original: " .. text)
+        print("Translated: " .. translated)
+
+        show_osd(translated)
+    else
+        print("Translate failed")
+        show_osd("Translate failed")
+    end
+end
+
+local function quick_translate_input()
+    pause_video()
+
+    input.get({
+        prompt = "Translate text: ",
+        submit = quick_translate_submit
+    })
+end
+
+-- ==========================================================
+-- INPUT URL
 -- ==========================================================
 
 local function input_server_url()
@@ -136,15 +219,12 @@ local function input_server_url()
             input.terminate()
 
             if text and text ~= "" then
-                -- hapus spasi di awal/akhir
                 text = text:match("^%s*(.-)%s*$")
 
-                -- kalau user belum menulis http:// atau https://
                 if not text:match("^https?://") then
                     text = "http://" .. text
                 end
 
-                -- tambahkan port default kalau belum ada
                 if not text:match(":%d+$") then
                     text = text .. ":5010"
                 end
@@ -161,8 +241,9 @@ end
 -- ==========================================================
 
 mp.add_key_binding("t", "translate_osd", translate_osd_and_terminal)
-mp.add_key_binding("Ctrl+Shift+t", "translate_terminal", translate_terminal_only)
+mp.add_key_binding("Ctrl+Shift+t", "realtime_translate", toggle_realtime_translate)
 mp.add_key_binding("Ctrl+t", "set_server_url", input_server_url)
+mp.add_key_binding("Ctrl+Alt+t", "quick_translate_input", quick_translate_input)
 
 mp.observe_property("pause","bool",function(_, paused)
     if paused == false then
