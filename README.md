@@ -77,6 +77,9 @@ Copy:
 * `conf/android/mpv.conf`
 * `conf/android/input.conf`
 
+
+If the folder doesn't exist, just create one.
+
 to:
 
 ```text
@@ -126,3 +129,5 @@ include=/storage/emulated/0/Android/media/is.xyz.mpv/mpv.conf
 * **Double tap left** → Clear shader
 * **Double tap center** → High quality
 * **Double tap right** → Fast mode
+
+If it doesn't work, try changing the HW to SW or vice versa.
