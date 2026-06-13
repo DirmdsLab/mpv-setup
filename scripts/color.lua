@@ -1,8 +1,9 @@
 -- color_profiles.lua
 
+-- add u like
 local profiles = {
-    ["!"] = { name = "Natural (Default)", contrast = 0, brightness = 0, gamma = 0, saturation = 0 },
-    ["%"] = { name = "Color Boost", contrast = 0, brightness = 0, gamma = 0, saturation = 70 },
+    ["!"] = { name = "Default", contrast = 0, brightness = 0, gamma = 0, saturation = 0 },
+    ["@"] = { name = "Color Boost", contrast = 0, brightness = 0, gamma = 0, saturation = 70 },
 }
 
 local function apply_profile(symbol)
@@ -19,4 +20,4 @@ local function apply_profile(symbol)
 end
 
 mp.add_key_binding("Ctrl+Shift+!", "profile_1", function() apply_profile("!") end)
-mp.add_key_binding("Ctrl+y", "profile_5", function() apply_profile("%") end)
+mp.add_key_binding("Ctrl+shift+@", "profile_2", function() apply_profile("@") end)
