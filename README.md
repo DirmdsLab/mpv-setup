@@ -44,6 +44,8 @@ to:
 └── input.conf
 ```
 
+or just run ./linux_setup.sh
+
 ## Windows
 run win win_setup.bat auto
 
@@ -64,12 +66,16 @@ to:
 └── input.conf
 ```
 
+or just run win_setup.bat
+
 ## Android
 
 ### Install MPV
 
 * Google Play: https://play.google.com/store/apps/details?id=is.xyz.mpv
 * Official website: https://mpv.io/installation/
+
+manual recomend manual
 
 Copy:
 
@@ -102,6 +108,12 @@ into:
 ```text
 scripts/
 ```
+
+run script via termux
+
+make sure the termux storage settings are set
+
+just run ./termux_setup.sh
 
 ## Android Configuration
 
