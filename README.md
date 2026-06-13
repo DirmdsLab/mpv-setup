@@ -144,3 +144,180 @@ include=/storage/emulated/0/Android/media/is.xyz.mpv/mpv.conf
 * **Double tap right** → Fast mode
 
 If it doesn't work, try changing the HW to SW or vice versa.
+
+
+## Keybind
+### Volume Control
+- `W` → Increase volume (+5)
+- `S` → Decrease volume (-5)
+
+### Seeking
+- `A` → Seek backward (-5s)
+- `D` → Seek forward (+5s)
+
+---
+
+## Playlist Control
+
+ `Ctrl + Shift + P` → Toggle playlist loop mode
+  ```text
+  cycle-values loop-playlist no inf
+````
+
+# High-End GPU Presets (Quality Mode)
+
+### CTRL + 1 — Mode A (HQ)
+
+```text
+Anime4K: Mode A (HQ)
+```
+
+### CTRL + 2 — Mode B (HQ)
+
+```text
+Anime4K: Mode B (HQ)
+```
+
+### CTRL + 3 — Mode C (HQ)
+
+```text
+Anime4K: Mode C (HQ)
+```
+
+### CTRL + 4 — Mode A+A (HQ)
+
+```text
+Anime4K: Mode A+A (HQ)
+```
+
+### CTRL + 5 — Mode B+B (HQ)
+
+```text
+Anime4K: Mode B+B (HQ)
+```
+
+### CTRL + 6 — Mode C+A (HQ)
+
+```text
+Anime4K: Mode C+A (HQ)
+```
+
+### CTRL + U — Alternative Mode A+A (HQ)
+
+```text
+Anime4K: Mode A+A (HQ)
+```
+
+---
+
+# Low-End GPU Presets (Performance Mode)
+
+### CTRL + ALT + 1 — Mode A (Fast)
+
+```text
+Anime4K: Mode A (Fast)
+```
+
+### CTRL + ALT + 2 — Mode B (Fast)
+
+```text
+Anime4K: Mode B (Fast)
+```
+
+### CTRL + ALT + 3 — Mode C (Fast)
+
+```text
+Anime4K: Mode C (Fast)
+```
+
+### CTRL + ALT + 4 — Mode A+A (Fast)
+
+```text
+Anime4K: Mode A+A (Fast)
+```
+
+### CTRL + ALT + 5 — Mode B+B (Fast)
+
+```text
+Anime4K: Mode B+B (Fast)
+```
+
+### CTRL + ALT + 6 — Mode C+A (Fast)
+
+```text
+Anime4K: Mode C+A (Fast)
+```
+### CTRL + 0 — Clear shaders
+
+```text
+GLSL shaders cleared
+```
+
+# Color
+### CTRL + SHIFT + ! — Default Color Profile
+
+```text
+Default
+````
+
+### CTRL + SHIFT + @ — Color Boost Profile
+
+```text
+Color Boost saturation +70
+```
+
+# Frame Info
+
+### . — Next Frame
+
+```text
+Frame step forward
+````
+
+### , — Previous Frame
+
+```text
+Frame step backward
+```
+
+# Playlist Controls
+
+### CTRL + L — Shuffle Playlist
+
+```text
+Shuffle playlist
+````
+
+### SHIFT + R — Reverse Playlist
+
+```text
+Reverse playlist order
+```
+
+### CTRL + S — Save Playlist
+
+```text
+Save playlist
+```
+
+---
+
+### SHIFT + ENTER — Show Playlist
+
+```text
+Show playlist
+```
+
+### CTRL + SHIFT + ENTER — Open Menu
+
+```text
+Open menu
+```
+# Change Resolution
+
+### ctrl + r 
+
+```text
+resolution menu
+```
+
