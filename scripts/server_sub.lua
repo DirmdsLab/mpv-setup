@@ -14,6 +14,22 @@ local DUMP_SPEED = 10
 
 local DEFAULT_SERVER = "http://127.0.0.1:5010"
 
+local CONFIG_FILE = mp.command_native({"expand-path", "~~/server_ip.json"})
+
+local function get_server()
+    local f = io.open(CONFIG_FILE, "r")
+    if not f then
+        return nil
+    end
+
+    local data = f:read("*all")
+    f:close()
+
+    local json = utils.parse_json(data)
+
+    return json and json.url
+end
+
 local function get_tmp_dir()
     if package.config:sub(1, 1) == "\\" then
         return os.getenv("TEMP") or os.getenv("TMP") or "C:\\Temp"
@@ -70,9 +86,13 @@ end
 -- ==========================================================
 
 local function check_server()
-    if server_initialized then return true end
-    show_osd("Set server dulu! (Ctrl+t)\natau Alt+t untuk localhost")
-    msg.warn("Server belum diinisialisasi")
+    local server = get_server()
+
+    if server and server ~= "" then
+        return true
+    end
+
+    show_osd("Set server dulu!\nCtrl+x = input\nAlt+x = localhost")
     return false
 end
 
@@ -133,25 +153,33 @@ end
 -- ==========================================================
 
 local function translate_text(text)
-    if not server_url then
-        show_osd("Server belum diset! (Ctrl+t)")
+    local server = get_server()
+
+    if not server then
+        show_osd("Server belum diset! (Ctrl+x)")
         return nil
     end
+
     local res = utils.subprocess({
         args = {
             "curl", "-s", "-X", "POST",
-            server_url .. "/translate",
+            server .. ":5010/translate",
             "-H", "Content-Type: application/json",
-            "-d", utils.format_json({ text = text })
+            "-d", utils.format_json({
+                text = text
+            })
         },
         cancellable = false
     })
+
     if res.status == 0 then
         local ok, parsed = pcall(utils.parse_json, res.stdout)
+
         if ok and parsed and parsed.translated then
             return parsed.translated
         end
     end
+
     return nil
 end
 
@@ -516,8 +544,8 @@ mp.add_key_binding("t",                "translate_osd",         guarded(translat
 mp.add_key_binding("Ctrl+Shift+t",     "realtime_translate",    guarded(toggle_realtime))
 mp.add_key_binding("Ctrl+Alt+t",       "quick_translate_input", guarded(quick_translate_input))
 mp.add_key_binding("Ctrl+Shift+Alt+t", "dump_vtt",              guarded(toggle_dump))
-mp.add_key_binding("Ctrl+t",           "set_server_url",        input_server_url)
-mp.add_key_binding("Alt+t",            "default_server",        use_default_server)
+
+
 
 -- Alt+Shift+T → resume a failed bulk translation
 mp.add_key_binding("Alt+Shift+t", "resume_translate", guarded(function()
